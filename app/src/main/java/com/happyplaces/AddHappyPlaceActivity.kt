@@ -1,9 +1,13 @@
 package com.happyplaces
 
+import android.Manifest
+import android.app.AlertDialog
 import android.app.DatePickerDialog
 import android.os.Bundle
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
+import com.karumi.dexter.Dexter
+import com.karumi.dexter.listener.multi.MultiplePermissionsListener
 import kotlinx.android.synthetic.main.activity_add_happy_place.*
 import java.text.SimpleDateFormat
 import java.util.*
@@ -67,6 +71,7 @@ class AddHappyPlaceActivity : AppCompatActivity(),View.OnClickListener {
         // START
         et_date.setOnClickListener(this)
         // END
+        tv_add_image.setOnClickListener (this)
     }
     // TODO(Step 5 : This is a override method after extending the onclick listener interface.)
     // START
@@ -84,8 +89,32 @@ class AddHappyPlaceActivity : AppCompatActivity(),View.OnClickListener {
                     cal.get(Calendar.DAY_OF_MONTH)
                 ).show()
             }
+            R.id.iv_place_image ->{
+                val pictureDialog = AlertDialog.Builder(this)
+                pictureDialog.setTitle("Select Action")
+                val pictureDialogItems = arrayOf("Select photo from Gallery",
+                "Capture photo from Camera")
+                pictureDialog.setItems(pictureDialogItems){
+                    dialog, which ->
+                    when(which){
+                        0 -> choosePhotoFromGallery()
+                    }
+                }
+                pictureDialog.show()
+            }
             // END
         }
+    }
+
+    private fun choosePhotoFromGallery() {
+        Dexter.withContext(this).withPermission(
+            Manifest.permission.READ_EXTERNAL_STORAGE,
+            Manifest.permission.WRITE_EXTERNAL_STORAGE,
+            Manifest.permission.CAMERA
+
+        ).withListener(object : MultiplePermissionsListener(){
+            @Override public void onPermissionsChecked
+        }).check()
     }
     // END
 
