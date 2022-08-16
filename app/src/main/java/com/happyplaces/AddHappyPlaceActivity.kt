@@ -156,6 +156,7 @@ class AddHappyPlaceActivity : AppCompatActivity(),View.OnClickListener {
                     dialog, which ->
                     when(which){
                         0 -> choosePhotoFromGallery()
+                        1 -> takePhotoFromCamera()
                     }
                 }
                 pictureDialog.show()
@@ -231,4 +232,35 @@ class AddHappyPlaceActivity : AppCompatActivity(),View.OnClickListener {
         private const val CAMERA = 2
         // END
     }
+    /**
+     * A method is used  asking the permission for camera and storage and image capturing and selection from Camera.
+     */
+    private fun takePhotoFromCamera() {
+
+        Dexter.withActivity(this)
+            .withPermissions(
+                Manifest.permission.READ_EXTERNAL_STORAGE,
+                Manifest.permission.WRITE_EXTERNAL_STORAGE,
+                Manifest.permission.CAMERA
+            )
+            .withListener(object : MultiplePermissionsListener {
+                override fun onPermissionsChecked(report: MultiplePermissionsReport?) {
+                    // Here after all the permission are granted launch the CAMERA to capture an image.
+                    if (report!!.areAllPermissionsGranted()) {
+                        val intent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
+                        startActivityForResult(intent, CAMERA)
+                    }
+                }
+
+                override fun onPermissionRationaleShouldBeShown(
+                    permissions: MutableList<PermissionRequest>?,
+                    token: PermissionToken?
+                ) {
+                    showRationalDialogForPermissions()
+                }
+            }).onSameThread()
+            .check()
+    }
+    // END
+
 }
