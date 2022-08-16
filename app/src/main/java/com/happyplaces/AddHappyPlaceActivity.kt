@@ -1,13 +1,17 @@
 package com.happyplaces
 
 import android.Manifest
+import android.app.Activity
 import android.app.AlertDialog
 import android.app.DatePickerDialog
 import android.content.ActivityNotFoundException
 import android.content.Intent
+import android.graphics.Bitmap
 import android.net.Uri
 import android.os.Bundle
+import android.provider.MediaStore
 import android.provider.Settings
+import android.util.Log
 import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
@@ -18,6 +22,7 @@ import com.karumi.dexter.PermissionToken
 import com.karumi.dexter.listener.PermissionRequest
 import com.karumi.dexter.listener.multi.MultiplePermissionsListener
 import kotlinx.android.synthetic.main.activity_add_happy_place.*
+import java.io.IOException
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -84,6 +89,50 @@ class AddHappyPlaceActivity : AppCompatActivity(),View.OnClickListener {
     }
     // TODO(Step 5 : This is a override method after extending the onclick listener interface.)
     // START
+    // TODO(Step 3 : Receive the result of GALLERY and CAMERA.)
+    // START
+    /**
+     * Receive the result from a previous call to
+     * {@link #startActivityForResult(Intent, int)}.  This follows the
+     * related Activity API as described there in
+     * {@link Activity#onActivityResult(int, int, Intent)}.
+     *
+     * @param requestCode The integer request code originally supplied to
+     *                    startActivityForResult(), allowing you to identify who this
+     *                    result came from.
+     * @param resultCode The integer result code returned by the child activity
+     *                   through its setResult().
+     * @param data An Intent, which can return result data to the caller
+     *               (various data can be attached to Intent "extras").
+     */
+    public override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (resultCode == Activity.RESULT_OK) {
+            if (requestCode == GALLERY) {
+                if (data != null) {
+                    val contentURI = data.data
+                    try {
+                        // Here this is used to get an bitmap from URI
+                        @Suppress("DEPRECATION")
+                        val selectedImageBitmap =
+                            MediaStore.Images.Media.getBitmap(this.contentResolver, contentURI)
+
+                        iv_place_image!!.setImageBitmap(selectedImageBitmap) // Set the selected image from GALLERY to imageView.
+                    } catch (e: IOException) {
+                        e.printStackTrace()
+                        Toast.makeText(this@AddHappyPlaceActivity, "Failed!", Toast.LENGTH_SHORT).show()
+                    }
+                }
+                // TODO (Step 7: Camera result will be received here.)
+            } else if (requestCode == CAMERA) {
+
+                val thumbnail: Bitmap = data!!.extras!!.get("data") as Bitmap // Bitmap from camera
+                iv_place_image!!.setImageBitmap(thumbnail) // Set to the imageView.
+            }
+        } else if (resultCode == Activity.RESULT_CANCELED) {
+            Log.e("Cancelled", "Cancelled")
+        }
+    }
     override fun onClick(v: View?) {
         when (v!!.id) {
             // TODO(Step 7 : Launching the datepicker dialog on click of date edittext.)
@@ -122,9 +171,13 @@ class AddHappyPlaceActivity : AppCompatActivity(),View.OnClickListener {
         ).withListener(object : MultiplePermissionsListener{
            	    override fun onPermissionsChecked(report: MultiplePermissionsReport) {
                        if(report.areAllPermissionsGranted()){
-                           Toast.makeText(this@AddHappyPlaceActivity,"Storage READ/WRITE permission are granted. Now you can select an image from GALLERY",
-                           Toast.LENGTH_SHORT
-                               ).show()
+                           // TODO(Step 1 : Adding an image selection code here from Gallery or phone storage.)
+                           // START
+                           val galleryIntent = Intent(
+                               Intent.ACTION_PICK,
+                               MediaStore.Images.Media.EXTERNAL_CONTENT_URI
+                           )
+                           startActivityForResult(galleryIntent,GALLERY)
 
                        }
                    }
@@ -166,5 +219,16 @@ class AddHappyPlaceActivity : AppCompatActivity(),View.OnClickListener {
         val sdf = SimpleDateFormat(myFormat, Locale.getDefault()) // A date format
         et_date.setText(sdf.format(cal.time).toString()) // A selected date using format which we have used is set to the UI.
     }
-    // END
+
+    companion object {
+        // TODO(Step 2 : Create a variable for GALLERY Selection which will be later used in the onActivityResult method.)
+        // START
+        private const val GALLERY = 1
+        // END
+
+        // TODO(Step 5 : Create a variable for CAMERA Selection which will be later used in the onActivityResult method.)
+        // START
+        private const val CAMERA = 2
+        // END
+    }
 }
