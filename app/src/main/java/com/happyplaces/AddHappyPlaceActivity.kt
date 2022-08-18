@@ -5,6 +5,8 @@ import android.app.Activity
 import android.app.AlertDialog
 import android.app.DatePickerDialog
 import android.content.ActivityNotFoundException
+import android.content.Context
+import android.content.ContextWrapper
 import android.content.Intent
 import android.graphics.Bitmap
 import android.net.Uri
@@ -22,7 +24,10 @@ import com.karumi.dexter.PermissionToken
 import com.karumi.dexter.listener.PermissionRequest
 import com.karumi.dexter.listener.multi.MultiplePermissionsListener
 import kotlinx.android.synthetic.main.activity_add_happy_place.*
+import java.io.File
+import java.io.FileOutputStream
 import java.io.IOException
+import java.io.OutputStream
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -116,7 +121,9 @@ class AddHappyPlaceActivity : AppCompatActivity(),View.OnClickListener {
                         @Suppress("DEPRECATION")
                         val selectedImageBitmap =
                             MediaStore.Images.Media.getBitmap(this.contentResolver, contentURI)
-
+                        val saveImageToInternalStorage =
+                            saveImageToInternalStorage(selectedImageBitmap)
+                        Log.e("Saved Image : ", "Path :: $saveImageToInternalStorage")
                         iv_place_image!!.setImageBitmap(selectedImageBitmap) // Set the selected image from GALLERY to imageView.
                     } catch (e: IOException) {
                         e.printStackTrace()
@@ -127,6 +134,10 @@ class AddHappyPlaceActivity : AppCompatActivity(),View.OnClickListener {
             } else if (requestCode == CAMERA) {
 
                 val thumbnail: Bitmap = data!!.extras!!.get("data") as Bitmap // Bitmap from camera
+                val saveImageToInternalStorage =
+                    saveImageToInternalStorage(thumbnail)
+                Log.e("Saved Image : ", "Path :: $saveImageToInternalStorage")
+                // END
                 iv_place_image!!.setImageBitmap(thumbnail) // Set to the imageView.
             }
         } else if (resultCode == Activity.RESULT_CANCELED) {
@@ -231,6 +242,8 @@ class AddHappyPlaceActivity : AppCompatActivity(),View.OnClickListener {
         // START
         private const val CAMERA = 2
         // END
+        private const val IMAGE_DIRECTORY = "HappyPlacesImages"
+        // END
     }
     /**
      * A method is used  asking the permission for camera and storage and image capturing and selection from Camera.
@@ -260,6 +273,49 @@ class AddHappyPlaceActivity : AppCompatActivity(),View.OnClickListener {
                 }
             }).onSameThread()
             .check()
+    }
+    // END
+    // TODO (Step 2 : Creating a method to save a copy of an selected image to internal storage for use of Happy Places App.)
+    // START
+    /**
+     * A function to save a copy of an image to internal storage for HappyPlaceApp to use.
+     */
+    private fun saveImageToInternalStorage(bitmap: Bitmap): Uri {
+
+        // Get the context wrapper instance
+        val wrapper = ContextWrapper(applicationContext)
+
+        // Initializing a new file
+        // The bellow line return a directory in internal storage
+        /**
+         * The Mode Private here is
+         * File creation mode: the default mode, where the created file can only
+         * be accessed by the calling application (or all applications sharing the
+         * same user ID).
+         */
+        var file = wrapper.getDir(IMAGE_DIRECTORY, Context.MODE_PRIVATE)
+
+        // Create a file to save the image
+        file = File(file, "${UUID.randomUUID()}.jpg")
+
+        try {
+            // Get the file output stream
+            val stream: OutputStream = FileOutputStream(file)
+
+            // Compress bitmap
+            bitmap.compress(Bitmap.CompressFormat.JPEG, 100, stream)
+
+            // Flush the stream
+            stream.flush()
+
+            // Close stream
+            stream.close()
+        } catch (e: IOException) { // Catch the exception
+            e.printStackTrace()
+        }
+
+        // Return the saved image uri
+        return Uri.parse(file.absolutePath)
     }
     // END
 
