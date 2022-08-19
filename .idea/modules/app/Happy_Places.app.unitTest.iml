@@ -14,7 +14,6 @@
           <stringArguments>
             <stringArg name="classpath">
               <args>
-                <arg>$MODULE_DIR$/../../../app/build/intermediates/compile_and_runtime_not_namespaced_r_class_jar/debug/R.jar</arg>
                 <arg>$USER_HOME$/.gradle/caches/transforms-2/files-2.1/743b58f1311457c097c5bd41baf6b2fb/jetified-junit-4.13.jar</arg>
                 <arg>$USER_HOME$/.gradle/caches/transforms-2/files-2.1/a35f323ede7ace47ffd91db0641bbbd7/jetified-hamcrest-core-1.3.jar</arg>
                 <arg>$USER_HOME$/.gradle/caches/transforms-2/files-2.1/5feaaffc145dca7980962d0a1cde149f/jetified-kotlin-android-extensions-runtime-1.3.70.jar</arg>
