@@ -14,6 +14,7 @@
           <stringArguments>
             <stringArg name="classpath">
               <args>
+                <arg>$MODULE_DIR$/../../../app/build/intermediates/compile_and_runtime_not_namespaced_r_class_jar/debug/R.jar</arg>
                 <arg>$USER_HOME$/.gradle/caches/transforms-2/files-2.1/743b58f1311457c097c5bd41baf6b2fb/jetified-junit-4.13.jar</arg>
                 <arg>$USER_HOME$/.gradle/caches/transforms-2/files-2.1/a35f323ede7ace47ffd91db0641bbbd7/jetified-hamcrest-core-1.3.jar</arg>
                 <arg>$USER_HOME$/.gradle/caches/transforms-2/files-2.1/5feaaffc145dca7980962d0a1cde149f/jetified-kotlin-android-extensions-runtime-1.3.70.jar</arg>
@@ -22,6 +23,7 @@
                 <arg>$USER_HOME$/.gradle/caches/transforms-2/files-2.1/64fee3ca06f089f5d031bea3f3571b96/jetified-kotlin-stdlib-1.3.70.jar</arg>
                 <arg>$USER_HOME$/.gradle/caches/transforms-2/files-2.1/c2ed3df1a8eabfbadfbfac707f4333f1/jetified-kotlin-stdlib-common-1.3.70.jar</arg>
                 <arg>$USER_HOME$/.gradle/caches/transforms-2/files-2.1/5f566d86d754ba9480ac25f380d31cf8/jetified-annotations-13.0.jar</arg>
+                <arg>$USER_HOME$/.gradle/caches/transforms-2/files-2.1/e5f049eeede97f273a2aa0897a159133/jetified-dexter-6.2.3-api.jar</arg>
                 <arg>$USER_HOME$/.gradle/caches/transforms-2/files-2.1/2db34e7fc794a9a9de093442b9239d2e/material-1.0.0-api.jar</arg>
                 <arg>$USER_HOME$/.gradle/caches/transforms-2/files-2.1/931804c323dd3c709c2b1dfd4360d5ba/appcompat-1.1.0-api.jar</arg>
                 <arg>$USER_HOME$/.gradle/caches/transforms-2/files-2.1/1812d3404147a81cf1c8664303869ad8/fragment-1.1.0-api.jar</arg>
@@ -142,6 +144,7 @@
     <orderEntry type="library" scope="TEST" name="Gradle: androidx.annotation:annotation:1.1.0" level="project" />
     <orderEntry type="library" scope="TEST" name="Gradle: androidx.constraintlayout:constraintlayout-solver:1.1.3" level="project" />
     <orderEntry type="library" scope="TEST" name="Gradle: androidx.core:core-ktx:1.2.0@aar" level="project" />
+    <orderEntry type="library" scope="TEST" name="Gradle: com.karumi:dexter:6.2.3@aar" level="project" />
     <orderEntry type="library" scope="TEST" name="Gradle: com.google.android.material:material:1.0.0@aar" level="project" />
     <orderEntry type="library" scope="TEST" name="Gradle: androidx.appcompat:appcompat:1.1.0@aar" level="project" />
     <orderEntry type="library" scope="TEST" name="Gradle: androidx.fragment:fragment:1.1.0@aar" level="project" />
