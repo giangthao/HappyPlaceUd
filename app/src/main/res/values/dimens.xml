@@ -20,5 +20,9 @@
     <dimen name="add_place_image_shape_radius">3dp</dimen>
     <dimen name="button_radius">10dp</dimen>
     <!--END-->
+    <!--TODO(Step 6 : Dimen value is added in the constant resources file which is dimens.xml.)-->
+    <!--START-->
+    <dimen name="no_records_available_text_size">16sp</dimen>
+    <!--END-->
 
 </resources>

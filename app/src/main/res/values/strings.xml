@@ -10,4 +10,8 @@
     <string name="text_add_image">ADD IMAGE</string>
     <string name="btn_text_save">SAVE</string>
     <!--END-->
+    <!--TODO(Step 5 : String value is added in the constant resources file which is strings.xml.)-->
+    <!--START-->
+    <string name="note_text_no_happy_places_found_yet_kindly_add_one">No Happy Places Found Yet. Kindly add one.</string>
+    <!--END-->
 </resources>
