@@ -3,8 +3,11 @@ package com.happyplaces.activities
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
+import android.view.View
 import androidx.appcompat.app.AppCompatActivity
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.happyplaces.R
+import com.happyplaces.adapters.HappyPlacesAdapter
 import com.happyplaces.database.DatabaseHandler
 import com.happyplaces.models.HappyPlaceModel
 import kotlinx.android.synthetic.main.activity_main.*
@@ -36,19 +39,38 @@ class MainActivity : AppCompatActivity() {
     /**
      * A function to get the list of happy place from local database.
      */
+
     private fun getHappyPlacesListFromLocalDB() {
 
         val dbHandler = DatabaseHandler(this)
 
-        val getHappyPlacesList :ArrayList<HappyPlaceModel> = dbHandler.getHappyPlacesList()
+        val getHappyPlacesList = dbHandler.getHappyPlacesList()
 
+        // TODO (Step 8: Calling an function which have created for getting list of inserted data from local database
+        //  and passing the list to recyclerview to populate in UI.)
+        // START
         if (getHappyPlacesList.size > 0) {
-            for (i in getHappyPlacesList) {
-                Log.e("Title", i.title)
-                Log.e("Description", i.description)
-                Log.e("date", i.date)
-            }
+            rv_happy_places_list.visibility = View.VISIBLE
+            tv_no_records_available.visibility = View.GONE
+            setupHappyPlacesRecyclerView(getHappyPlacesList)
+        } else {
+            rv_happy_places_list.visibility = View.GONE
+            tv_no_records_available.visibility = View.VISIBLE
         }
+        // END
+    }
+    // TODO(Step 7 : Creating a function for setting up the recyclerview to UI.)
+    // START
+    /**
+     * A function to populate the recyclerview to the UI.
+     */
+    private fun setupHappyPlacesRecyclerView(happyPlacesList: ArrayList<HappyPlaceModel>) {
+
+        rv_happy_places_list.layoutManager = LinearLayoutManager(this)
+        rv_happy_places_list.setHasFixedSize(true)
+
+        val placesAdapter = HappyPlacesAdapter(this, happyPlacesList)
+        rv_happy_places_list.adapter = placesAdapter
     }
     // END
 }
